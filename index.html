@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能体对话平台</title>
+    <!-- 引入Vant UI样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@4/lib/index.css"/>
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="./styles/main.css">
+    <!-- 图片占位图 -->
+    <link rel="icon" href="https://via.placeholder.com/32" type="image/png">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/180" type="image/png">
+    <meta name="theme-color" content="#23244a">
+</head>
+<body>
+    <div id="app">
+        <!-- 首页 -->
+        <div class="home-page" v-if="currentPage === 'home'">
+            <!-- 科技感背景与大标题 -->
+            <div class="tech-bg">
+                <div class="tech-halo"></div>
+                <div class="main-title">
+                    <span class="ipxai">IP×AI</span>
+                    <span class="title-text">小黄编导<br>文案智能体</span>
+                </div>
+                <div class="subtitle">
+                    黄导给你出文案<br>做你的文案助理
+                </div>
+                <div class="robot-icon">
+                    <img src="https://via.placeholder.com/64x64" alt="robot" />
+                </div>
+            </div>
+
+            <!-- 功能区块 -->
+            <div class="feature-list">
+                <div class="feature-card" @click="goTo('openOpt')">
+                    <div class="feature-icon"><img src="https://via.placeholder.com/44x44" alt="开篇优化" /></div>
+                    <div class="feature-info">
+                        <div class="feature-title">文案开篇优化</div>
+                        <div class="feature-desc">基于「开篇36计」优化文案开篇</div>
+                    </div>
+                    <div class="feature-arrow">&gt;</div>
+                </div>
+                <div class="feature-card" @click="goTo('hotTopic')">
+                    <div class="feature-icon"><img src="https://via.placeholder.com/44x44" alt="爆款选题" /></div>
+                    <div class="feature-info">
+                        <div class="feature-title">爆款选题创作</div>
+                        <div class="feature-desc">基于「选题36计」创作爆款选题</div>
+                    </div>
+                    <div class="feature-arrow">&gt;</div>
+                </div>
+                <div class="feature-card" @click="goTo('original')">
+                    <div class="feature-icon"><img src="https://via.placeholder.com/44x44" alt="原创文案" /></div>
+                    <div class="feature-info">
+                        <div class="feature-title">原创文案创作</div>
+                        <div class="feature-desc">原创文案智能生成</div>
+                    </div>
+                    <div class="feature-arrow">&gt;</div>
+                </div>
+            </div>
+
+            <!-- 底部导航栏 -->
+            <van-tabbar v-model="activeTab">
+                <van-tabbar-item icon="home-o">首页</van-tabbar-item>
+                <van-tabbar-item icon="star-o">宝藏素材</van-tabbar-item>
+                <van-tabbar-item icon="user-o">我的</van-tabbar-item>
+            </van-tabbar>
+        </div>
+
+        <!-- 对话页面 -->
+        <div class="chat-page" v-if="currentPage === 'chat'">
+            <!-- 顶部信息栏 -->
+            <van-nav-bar
+                :title="currentAgent.name"
+                left-arrow
+                @click-left="backToHome"
+            >
+                <template #right>
+                    <van-icon name="ellipsis" size="18" />
+                </template>
+            </van-nav-bar>
+
+            <!-- 对话内容区 -->
+            <div class="chat-content" ref="chatContent">
+                <div v-for="(message, index) in messages" :key="index" 
+                     :class="['message', message.type === 'user' ? 'message-user' : 'message-agent']">
+                    <img :src="message.type === 'user' ? 'https://via.placeholder.com/40x40' : currentAgent.avatar" 
+                         class="message-avatar" />
+                    <div class="message-bubble">{{ message.content }}</div>
+                    <div class="message-time">{{ message.time }}</div>
+                </div>
+            </div>
+
+            <!-- 底部输入区 -->
+            <div class="chat-input">
+                <van-field
+                    v-model="inputMessage"
+                    placeholder="请输入消息"
+                    :border="false"
+                    class="input-field"
+                >
+                    <template #button>
+                        <van-button size="small" type="primary" @click="sendMessage">发送</van-button>
+                    </template>
+                </van-field>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入Vue3 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    <!-- 引入Vant UI组件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vant@4/lib/vant.min.js"></script>
+    <!-- 引入自定义脚本 -->
+    <script src="./scripts/main.js"></script>
+</body>
+</html> 
